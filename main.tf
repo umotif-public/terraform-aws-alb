@@ -49,6 +49,24 @@ resource "aws_lb" "main" {
   }
 }
 
+resource "aws_lb_listener" "frontend_http_to_https_redirect" {
+  count = var.enable_http_to_https_redirect ? 1 : 0
+
+  load_balancer_arn = aws_lb.main.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 resource "aws_security_group" "main" {
   count       = var.load_balancer_type == "network" ? 0 : 1
   name        = "${local.name_prefix}-sg"

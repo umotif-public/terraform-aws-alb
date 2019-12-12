@@ -30,13 +30,15 @@ module "vpc" {
 module "alb" {
   source = "../../"
 
-  name_prefix = "complete-alb"
+  name_prefix = "complete-example"
 
   load_balancer_type = "application"
 
   internal = false
   vpc_id   = module.vpc.vpc_id
   subnets  = flatten([module.vpc.public_subnets])
+
+  enable_http_to_https_redirect = true
 
   tags = {
     Project = "Test"
@@ -60,4 +62,27 @@ resource "aws_lb_listener" "alb_80_redirect_to_443" {
       status_code = "HTTP_301"
     }
   }
+}
+
+#####
+# SGs
+#####
+resource "aws_security_group_rule" "alb_ingress_80" {
+  security_group_id = module.alb.security_group_id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 80
+  to_port           = 80
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+}
+
+resource "aws_security_group_rule" "alb_ingress_443" {
+  security_group_id = module.alb.security_group_id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
 }

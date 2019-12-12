@@ -90,3 +90,9 @@ variable "load_balancer_delete_timeout" {
   type        = string
   default     = "15m"
 }
+
+variable "enable_http_to_https_redirect" {
+  description = "Enable default redirect rule from port 80 to 443."
+  type        = bool
+  default     = false
+}
