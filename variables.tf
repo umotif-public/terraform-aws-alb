@@ -96,3 +96,9 @@ variable "enable_http_to_https_redirect" {
   type        = bool
   default     = false
 }
+
+variable "cidr_blocks_port_80_redirect" {
+  type        = list(string)
+  description = "List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0"
+  default     = ["0.0.0.0/0"]
+}
