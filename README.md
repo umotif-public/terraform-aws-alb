@@ -84,7 +84,8 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 | subnets | A list of subnet IDs to attach to the LB. | list(string) | n/a | yes |
 | vpc\_id | The VPC ID. | string | n/a | yes |
 | access\_logs | An Access Logs block. | map(string) | `{}` | no |
-| cidr\_blocks\_port\_80\_redirect | List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0 | list(string) | `[ "0.0.0.0/0" ]` | no |
+| cidr\_blocks\_redirect | List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0 | list(string) | `[ "0.0.0.0/0" ]` | no |
+| description | The description of the all resources. | string | `"Managed by Terraform"` | no |
 | enable\_cross\_zone\_load\_balancing | If true, cross-zone load balancing of the load balancer will be enabled. This is a network load balancer feature. | bool | `"false"` | no |
 | enable\_deletion\_protection | If true, deletion of the load balancer will be disabled via the AWS API. This will prevent Terraform from deleting the load balancer. | bool | `"false"` | no |
 | enable\_http2 | Indicates whether HTTP/2 is enabled in application load balancers. | bool | `"true"` | no |
