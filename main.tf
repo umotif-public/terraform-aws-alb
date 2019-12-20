@@ -69,8 +69,8 @@ resource "aws_lb_listener" "frontend_http_to_https_redirect" {
 
 resource "aws_security_group" "main" {
   count       = var.load_balancer_type == "network" ? 0 : 1
-  name        = "${local.name_prefix}-sg"
-  description = "Managed by Terraform"
+  name_prefix = "${local.name_prefix}-sg-"
+  description = var.description
   vpc_id      = var.vpc_id
 
   tags = merge(
@@ -79,6 +79,10 @@ resource "aws_security_group" "main" {
       "Name" = "${local.name_prefix}-sg"
     },
   )
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "allow_port_80_ingress_for_http_to_https_redirect" {
@@ -87,7 +91,18 @@ resource "aws_security_group_rule" "allow_port_80_ingress_for_http_to_https_redi
   from_port   = 80
   to_port     = 80
   protocol    = "tcp"
-  cidr_blocks = var.cidr_blocks_port_80_redirect
+  cidr_blocks = var.cidr_blocks_redirect
+
+  security_group_id = aws_security_group.main[0].id
+}
+
+resource "aws_security_group_rule" "allow_port_443_ingress_for_http_to_https_redirect" {
+  count       = var.load_balancer_type == "application" && var.enable_http_to_https_redirect ? 1 : 0
+  type        = "ingress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  cidr_blocks = var.cidr_blocks_redirect
 
   security_group_id = aws_security_group.main[0].id
 }

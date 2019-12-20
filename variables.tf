@@ -97,8 +97,14 @@ variable "enable_http_to_https_redirect" {
   default     = false
 }
 
-variable "cidr_blocks_port_80_redirect" {
+variable "cidr_blocks_redirect" {
   type        = list(string)
   description = "List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0"
   default     = ["0.0.0.0/0"]
+}
+
+variable "description" {
+  default     = "Managed by Terraform"
+  type        = string
+  description = "The description of the all resources."
 }

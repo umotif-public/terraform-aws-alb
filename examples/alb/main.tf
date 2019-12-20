@@ -39,7 +39,7 @@ module "alb" {
   subnets  = flatten([module.vpc.public_subnets])
 
   enable_http_to_https_redirect = true
-  cidr_blocks_port_80_redirect  = ["10.10.0.0/16"]
+  cidr_blocks_redirect          = ["10.10.0.0/16"]
 
   tags = {
     Project = "Test"
