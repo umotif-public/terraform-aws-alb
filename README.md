@@ -19,7 +19,7 @@ Terraform 0.12. Pin module version to `~> v1.0`. Submit pull-requests to `master
 module "alb" {
   source = "umotif-public/alb/aws"
   version = "~> 1.0"
-  
+
   name_prefix = "complete-alb"
 
   load_balancer_type = "application"
@@ -80,9 +80,6 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| name\_prefix | A prefix used for naming resources. | string | n/a | yes |
-| subnets | A list of subnet IDs to attach to the LB. | list(string) | n/a | yes |
-| vpc\_id | The VPC ID. | string | n/a | yes |
 | access\_logs | An Access Logs block. | map(string) | `{}` | no |
 | cidr\_blocks\_redirect | List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0 | list(string) | `[ "0.0.0.0/0" ]` | no |
 | description | The description of the all resources. | string | `"Managed by Terraform"` | no |
@@ -90,15 +87,18 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 | enable\_deletion\_protection | If true, deletion of the load balancer will be disabled via the AWS API. This will prevent Terraform from deleting the load balancer. | bool | `"false"` | no |
 | enable\_http2 | Indicates whether HTTP/2 is enabled in application load balancers. | bool | `"true"` | no |
 | enable\_http\_to\_https\_redirect | Enable default redirect rule from port 80 to 443. | bool | `"false"` | no |
-| idle\_timeout | (Optional) The time in seconds that the connection is allowed to be idle. Only valid for Load Balancers of type application. | number | `"60"` | no |
+| idle\_timeout | \(Optional\) The time in seconds that the connection is allowed to be idle. Only valid for Load Balancers of type application. | number | `"60"` | no |
 | internal | Provision an internal load balancer. Defaults to false. | bool | `"false"` | no |
 | ip\_address\_type | The type of IP addresses used by the subnets for your load balancer. The possible values are ipv4 and dualstack. | string | `"ipv4"` | no |
 | load\_balancer\_create\_timeout | Timeout value when creating the ALB. | string | `"15m"` | no |
 | load\_balancer\_delete\_timeout | Timeout value when deleting the ALB. | string | `"15m"` | no |
-| load\_balancer\_type | Type of load balancer to provision (network or application). | string | `"application"` | no |
+| load\_balancer\_type | Type of load balancer to provision \(network or application\). | string | `"application"` | no |
 | load\_balancer\_update\_timeout | Timeout value when updating the ALB. | string | `"15m"` | no |
+| name\_prefix | A prefix used for naming resources. | string | n/a | yes |
 | subnet\_mapping | A list of subnet mapping blocks describing subnets to attach to network load balancer | list(map(string)) | `[]` | no |
-| tags | A map of tags (key-value pairs) passed to resources. | map(string) | `{}` | no |
+| subnets | A list of subnet IDs to attach to the LB. | list(string) | n/a | yes |
+| tags | A map of tags \(key-value pairs\) passed to resources. | map(string) | `{}` | no |
+| vpc\_id | The VPC ID. | string | n/a | yes |
 
 ## Outputs
 
@@ -110,10 +110,25 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 | name | The name of the load balancer. |
 | origin\_id | First part of the DNS name of the load balancer. |
 | security\_group\_id | The ID of the security group. |
-| zone\_id | The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record). |
+| zone\_id | The canonical hosted zone ID of the load balancer \(to be used in a Route 53 Alias record\). |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## License
 
 See LICENSE for full details.
+
+## Pre-commit hooks
+
+### Install dependencies
+
+* [`pre-commit`](https://pre-commit.com/#install)
+* [`terraform-docs`](https://github.com/segmentio/terraform-docs) required for `terraform_docs` hooks.
+* [`TFLint`](https://github.com/terraform-linters/tflint) required for `terraform_tflint` hook.
+
+#### MacOS
+
+```bash
+brew install pre-commit terraform-docs tflint
+```
+
