@@ -18,7 +18,7 @@ Terraform 0.12. Pin module version to `~> v1.0`. Submit pull-requests to `master
 ```hcl
 module "alb" {
   source = "umotif-public/alb/aws"
-  version = "~> 1.2.0"
+  version = "~> 1.2.1"
 
   name_prefix = "complete-alb"
 
@@ -43,7 +43,7 @@ module "alb" {
 ```hcl
 module "nlb" {
   source = "umotif-public/alb/aws"
-  version = "~> 1.2.0"
+  version = "~> 1.2.1"
 
   name = "complete-nlb"
 
@@ -70,6 +70,8 @@ Module is to be used with Terraform > 0.12.
 ## Examples
 
 * [Application Load Balancer ALB](https://github.com/umotif-public/terraform-aws-alb/tree/master/examples/alb)
+* [Application Load Balancer ALB with S3 access logs](https://github.com/umotif-public/terraform-aws-alb/tree/master/examples/alb-with-s3-access-logs)
+* [Application Load Balancer NLB](https://github.com/umotif-public/terraform-aws-alb/tree/master/examples/nlb)
 
 ## Authors
 
@@ -80,14 +82,14 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.6 |
-| aws | ~> 2.45 |
+| terraform | >= 0.12.6, < 0.14 |
+| aws | >= 2.45, < 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.45 |
+| aws | >= 2.45, < 4.0 |
 
 ## Inputs
 
