@@ -82,14 +82,14 @@ Module managed by [Marcin Cuber](https://github.com/marcincuber) [linkedin](http
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.6, < 0.14 |
-| aws | >= 2.45, < 4.0 |
+| terraform | >= 0.12.6 |
+| aws | >= 2.45 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.45, < 4.0 |
+| aws | >= 2.45 |
 
 ## Inputs
 
