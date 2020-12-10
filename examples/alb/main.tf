@@ -5,38 +5,26 @@ provider "aws" {
 #####
 # VPC and subnets
 #####
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "2.21.0"
-
-  name = "simple-vpc"
-
-  cidr = "10.0.0.0/16"
-
-  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-
-  enable_nat_gateway = false
-
-  tags = {
-    Environment = "test"
-  }
+data "aws_vpc" "default" {
+  default = true
 }
 
+data "aws_subnet_ids" "all" {
+  vpc_id = data.aws_vpc.default.id
+}
 #####
 # Application Load Balancer
 #####
 module "alb" {
   source = "../../"
 
-  name_prefix = "complete-example"
+  name_prefix = "complete-alb-example"
 
   load_balancer_type = "application"
 
   internal = false
-  vpc_id   = module.vpc.vpc_id
-  subnets  = flatten([module.vpc.public_subnets])
+  vpc_id   = data.aws_vpc.default.id
+  subnets  = data.aws_subnet_ids.all.ids
 
   enable_http_to_https_redirect = true
   cidr_blocks_redirect          = ["10.10.0.0/16"]
@@ -68,7 +56,6 @@ resource "aws_lb_listener" "alb_80_redirect_to_443" {
 #####
 # SGs
 #####
-
 resource "aws_security_group_rule" "alb_ingress_443" {
   security_group_id = module.alb.security_group_id
   type              = "ingress"

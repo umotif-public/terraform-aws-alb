@@ -1,9 +1,5 @@
-locals {
-  name_prefix = "${var.name_prefix}-${var.load_balancer_type == "network" ? "nlb" : "alb"}"
-}
-
 resource "aws_lb" "main" {
-  name = local.name_prefix
+  name = var.name_prefix
 
   load_balancer_type = var.load_balancer_type
   internal           = var.internal
@@ -38,7 +34,7 @@ resource "aws_lb" "main" {
   tags = merge(
     var.tags,
     {
-      "Name" = local.name_prefix
+      "Name" = var.name_prefix
     },
   )
 
@@ -69,14 +65,14 @@ resource "aws_lb_listener" "frontend_http_to_https_redirect" {
 
 resource "aws_security_group" "main" {
   count       = var.load_balancer_type == "network" ? 0 : 1
-  name_prefix = "${local.name_prefix}-sg-"
+  name_prefix = "${var.name_prefix}-sg-"
   description = var.description
   vpc_id      = var.vpc_id
 
   tags = merge(
     var.tags,
     {
-      "Name" = "${local.name_prefix}-sg"
+      "Name" = "${var.name_prefix}-sg"
     },
   )
 
