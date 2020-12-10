@@ -9,7 +9,7 @@ These types of resources are supported:
 
 ## Terraform versions
 
-Terraform 0.12. Pin module version to `~> v1.0`. Submit pull-requests to `master` branch.
+Terraform 0.12. Pin module version to `~> v2.0`. Submit pull-requests to `master` branch.
 
 ## Usage
 
@@ -18,7 +18,7 @@ Terraform 0.12. Pin module version to `~> v1.0`. Submit pull-requests to `master
 ```hcl
 module "alb" {
   source = "umotif-public/alb/aws"
-  version = "~> 1.2.1"
+  version = "~> 2.0.0"
 
   name_prefix = "complete-alb"
 
@@ -43,9 +43,9 @@ module "alb" {
 ```hcl
 module "nlb" {
   source = "umotif-public/alb/aws"
-  version = "~> 1.2.1"
+  version = "~> 2.0.0"
 
-  name = "complete-nlb"
+  name_prefix = "complete-nlb"
 
   load_balancer_type = "network"
 
@@ -53,13 +53,12 @@ module "nlb" {
   subnets            = ["subnet-abasdasd132123", "subnet-abasdasd132123132"]
 
   access_logs = {
-    bucket = "my-nlb-logs"
+    bucket = "nlb-logs"
   }
 
   tags = {
     Project = "Test"
   }
-
 }
 ```
 
