@@ -1,3 +1,5 @@
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/umotif-public/terraform-aws-alb?style=social)
+
 # AWS Application and Network Load Balancer Terraform module
 
 Terraform module which creates Application and/or Network Load Balancer resources in AWS.
