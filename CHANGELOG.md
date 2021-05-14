@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 <a name="unreleased"></a>
 ## [Unreleased]
 
-- Remove lb name's postfix and update examples
+- Update README.md
+
+
+<a name="2.0.0"></a>
+## [2.0.0] - 2020-12-10
+
+- Remove lb name's postfix and update examples ([#5](https://github.com/umotif-public/terraform-aws-alb/issues/5))
 
 
 <a name="1.2.2"></a>
@@ -52,7 +58,8 @@ All notable changes to this project will be documented in this file.
 - Add default redirect and nlb example
 
 
-[Unreleased]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.2...HEAD
+[Unreleased]: https://github.com/umotif-public/terraform-aws-alb/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.2...2.0.0
 [1.2.2]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/umotif-public/terraform-aws-alb/compare/1.1.0...1.2.0

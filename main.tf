@@ -61,6 +61,8 @@ resource "aws_lb_listener" "frontend_http_to_https_redirect" {
       status_code = "HTTP_301"
     }
   }
+
+  tags = var.tags
 }
 
 resource "aws_security_group" "main" {
