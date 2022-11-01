@@ -84,7 +84,7 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_security_group_rule" "allow_port_80_ingress_for_http_to_https_redirect" {
-  count       = var.load_balancer_type == "application" && var.enable_http_to_https_redirect ? 1 : 0
+  count       = var.load_balancer_type == "application" && var.enable_http_to_https_redirect && var.enable_ingress_security_group_rules ? 1 : 0
   type        = "ingress"
   from_port   = 80
   to_port     = 80
@@ -95,7 +95,7 @@ resource "aws_security_group_rule" "allow_port_80_ingress_for_http_to_https_redi
 }
 
 resource "aws_security_group_rule" "allow_port_443_ingress_for_http_to_https_redirect" {
-  count       = var.load_balancer_type == "application" && var.enable_http_to_https_redirect ? 1 : 0
+  count       = var.load_balancer_type == "application" && var.enable_http_to_https_redirect && var.enable_ingress_security_group_rules ? 1 : 0
   type        = "ingress"
   from_port   = 443
   to_port     = 443
