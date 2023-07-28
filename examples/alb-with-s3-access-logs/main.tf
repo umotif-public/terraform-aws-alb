@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-1"
-}
-
 #####
 # VPC and subnets
 #####
@@ -9,9 +5,13 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "all" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnets" "all" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
+
 #####
 # Application Load Balancer
 #####
@@ -24,7 +24,7 @@ module "alb" {
 
   internal = false
   vpc_id   = data.aws_vpc.default.id
-  subnets  = data.aws_subnet_ids.all.ids
+  subnets  = data.aws_subnets.all.ids
 
   enable_http_to_https_redirect = true
   cidr_blocks_redirect          = ["10.10.0.0/16"]
@@ -76,62 +76,74 @@ resource "aws_security_group_rule" "alb_ingress_443" {
 # S3 bucket storing ALB access logs
 #####
 locals {
-  alb_root_account_id = "156460612806" # valid account id for Ireland Region. Full list -> https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
+  alb_root_account_id = "156460612806" # valid account id for Ireland Region. Full list -> https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
 }
 
 resource "aws_s3_bucket" "alb_access_logs" {
   bucket = "example-alb-access-logs-bucket"
-  acl    = "private"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowELBRootAccount",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::${local.alb_root_account_id}:root"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::example-alb-access-logs-bucket/*"
-    },
-    {
-      "Sid": "AWSLogDeliveryWrite",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "delivery.logs.amazonaws.com"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::example-alb-access-logs-bucket/*",
-      "Condition": {
-        "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control"
-        }
-      }
-    },
-    {
-      "Sid": "AWSLogDeliveryAclCheck",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "delivery.logs.amazonaws.com"
-      },
-      "Action": "s3:GetBucketAcl",
-      "Resource": "arn:aws:s3:::example-alb-access-logs-bucket"
-    }
-  ]
-}
-POLICY
 
   tags = {
     Environment = "test"
   }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "alb_access_logs_encryption" {
+  bucket = aws_s3_bucket.alb_access_logs.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "alb_access_logs_bucket_policy" {
+  bucket = aws_s3_bucket.alb_access_logs.id
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "AllowELBRootAccount",
+        "Effect" : "Allow",
+        "Action" : "s3:PutObject",
+        "Resource" : "arn:aws:s3:::example-alb-access-logs-bucket/*",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${local.alb_root_account_id}:root"
+        }
+      },
+      {
+        "Sid" : "AWSLogDeliveryWrite",
+        "Effect" : "Allow",
+        "Action" : "s3:PutObject",
+        "Resource" : "arn:aws:s3:::example-alb-access-logs-bucket/*",
+        "Condition" : {
+          "StringEquals" : {
+            "s3:x-amz-acl" : "bucket-owner-full-control"
+          }
+        },
+        "Principal" : {
+          "Service" : "delivery.logs.amazonaws.com"
+        }
+      },
+      {
+        "Sid" : "AWSLogDeliveryAclCheck",
+        "Effect" : "Allow",
+        "Action" : "s3:GetBucketAcl",
+        "Resource" : "arn:aws:s3:::example-alb-access-logs-bucket",
+        "Principal" : {
+          "Service" : "delivery.logs.amazonaws.com"
+        }
+      },
+      {
+        "Sid" : "AllowALBAccess",
+        "Effect" : "Allow",
+        "Action" : "s3:PutObject",
+        "Resource" : "arn:aws:s3:::example-alb-access-logs-bucket/*",
+        "Principal" : {
+          "Service" : "elasticloadbalancing.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
