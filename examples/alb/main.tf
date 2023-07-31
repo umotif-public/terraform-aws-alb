@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-1"
-}
-
 #####
 # VPC and subnets
 #####
@@ -9,8 +5,15 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "all" {
-  vpc_id = data.aws_vpc.default.id
+#####
+# VPC and subnets
+#####
+
+data "aws_subnets" "all" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 #####
 # Application Load Balancer
@@ -24,7 +27,7 @@ module "alb" {
 
   internal = false
   vpc_id   = data.aws_vpc.default.id
-  subnets  = data.aws_subnet_ids.all.ids
+  subnets  = data.aws_subnets.all.ids
 
   enable_http_to_https_redirect = true
   cidr_blocks_redirect          = ["10.10.0.0/16"]

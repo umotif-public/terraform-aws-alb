@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Upgraded to 5.x compatibility + refactored S3 bucket for ALB security logs
+
+
+<a name="2.1.0"></a>
+## [2.1.0] - 2021-05-14
+
+- Add tags to alb listener ([#6](https://github.com/umotif-public/terraform-aws-alb/issues/6))
 - Update README.md
 
 
@@ -53,12 +60,25 @@ All notable changes to this project will be documented in this file.
 
 
 <a name="1.0.2"></a>
-## 1.0.2 - 2019-12-12
+## [1.0.2] - 2019-12-12
 
 - Add default redirect and nlb example
 
 
-[Unreleased]: https://github.com/umotif-public/terraform-aws-alb/compare/2.0.0...HEAD
+<a name="1.0.1"></a>
+## [1.0.1] - 2019-12-11
+
+- add documentation
+
+
+<a name="1.0.0"></a>
+## 1.0.0 - 2019-12-11
+
+- initial module push
+
+
+[Unreleased]: https://github.com/umotif-public/terraform-aws-alb/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/umotif-public/terraform-aws-alb/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.2...2.0.0
 [1.2.2]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/umotif-public/terraform-aws-alb/compare/1.2.0...1.2.1
@@ -66,3 +86,5 @@ All notable changes to this project will be documented in this file.
 [1.1.0]: https://github.com/umotif-public/terraform-aws-alb/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/umotif-public/terraform-aws-alb/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/umotif-public/terraform-aws-alb/compare/1.0.2...1.0.3
+[1.0.2]: https://github.com/umotif-public/terraform-aws-alb/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/umotif-public/terraform-aws-alb/compare/1.0.0...1.0.1
