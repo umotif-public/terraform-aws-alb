@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 <a name="unreleased"></a>
 ## [Unreleased]
 
+- Upgraded to 5.x compatibility + refactored S3 bucket for ALB security logs
 
 
 <a name="2.1.0"></a>
