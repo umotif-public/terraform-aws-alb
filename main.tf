@@ -4,7 +4,7 @@ resource "aws_lb" "main" {
   load_balancer_type = var.load_balancer_type
   internal           = var.internal
   subnets            = var.subnets
-  security_groups    = aws_security_group.main[0].id
+  security_groups    = [aws_security_group.main[0].id]
 
   idle_timeout                     = var.idle_timeout
   enable_deletion_protection       = var.enable_deletion_protection
