@@ -97,6 +97,12 @@ variable "enable_http_to_https_redirect" {
   default     = false
 }
 
+variable "enable_ingress_security_group_rules" {
+  description = "Enable ingress security group rules"
+  type        = bool
+  default     = true
+}
+
 variable "cidr_blocks_redirect" {
   type        = list(string)
   description = "List of CIDR ranges to allow at security group level. Defaults to 0.0.0.0/0"
